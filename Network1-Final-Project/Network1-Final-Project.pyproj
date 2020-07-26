@@ -21,7 +21,19 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="application_layer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="link_layer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="network_layer.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Network1_Final_Project.py" />
+    <Compile Include="transport_layer.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
