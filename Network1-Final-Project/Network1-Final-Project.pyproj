@@ -11,6 +11,8 @@
     <OutputPath>.</OutputPath>
     <Name>Network1-Final-Project</Name>
     <RootNamespace>Network1-Final-Project</RootNamespace>
+    <InterpreterId>
+    </InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>

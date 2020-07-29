@@ -17,7 +17,7 @@ class Ethernet:
 		else:
 		   print("Error: Protocol Number Not Identified")
 
-	def next():
+	def next(self):
 		return self.next_layer
 
 class ARP:

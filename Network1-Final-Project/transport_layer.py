@@ -14,7 +14,4 @@ class UDP:
 	def next():
 		pass
 
-class ICMP:
-	def __init__(self):
-		pass
 
