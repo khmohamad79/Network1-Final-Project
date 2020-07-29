@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>4f9778d1-5671-420d-b258-5f85f7083873</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Network1_Final_Project.py</StartupFile>
+    <StartupFile>test.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -33,6 +33,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Network1_Final_Project.py" />
+    <Compile Include="test.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="transport_layer.py">
       <SubType>Code</SubType>
     </Compile>
