@@ -10,31 +10,40 @@ class Ethernet:
 		self.src_mac = reformat_address(src_mac.hex(), 2, ':')
 		self.proto = proto
 
-		if self.proto == 2048:
-			self.next_layer = IPV4(self.data[14:])
-		elif self.proto == 2054:
-			self.next_layer = ARP(self.data[14:])
-		else:
-		   print("Error: Protocol Number Not Identified")
-		   self.next_layer = "undefined"
-
 	def next(self):
-		return self.next_layer
+		if hasattr(self, 'nextlayer'):
+			return self.nextlayer
+		else:
+			if self.proto == 2048:
+				self.nextlayer = IPV4(self.data[14:])
+			elif self.proto == 2054:
+				self.nextlayer = ARP(self.data[14:])
+			else:
+				print("Error: Protocol Number " + str(self.proto) + " Not Identified")
+				self.nextlayer = self.data[14:]
+			return self.nextlayer
+
 
 class ARP:
 	def __init__(self, data):
 		self.data = data
-		Htype, Ptype, Hlength, Plength, op = struct.unpack('! H H B B H', data[:64])
+		Htype, Ptype, Hlength, Plength, OP = struct.unpack('! H H B B H', data[:8])
 		self.Htype = Htype
 		self.Ptype = Ptype
 		self.Hlength = Hlength
 		self.Plength = Plength
-		self.op = op
-		start = 64;
-		self.SHA = data[start:start+Hlength*8]
-		start += Hlength*8
-		self.SPA = data[start:start+Plength*8]
-		start += Plength*8
-		self.THA = data[start:start+Hlength*8]
-		start += Hlength*8
-		self.TPA = data[start:start+Plength*8]
+		self.OP = OP
+		start = 8;
+		self.SHA = data[start:start+Hlength]
+		start += Hlength
+		self.SPA = data[start:start+Plength]
+		start += Plength
+		self.THA = data[start:start+Hlength]
+		start += Hlength
+		self.TPA = data[start:start+Plength]
+		start += Plength
+		self.start = start
+		
+
+	def next(self):
+		return self.data[self.start:]
