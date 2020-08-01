@@ -23,17 +23,42 @@ class TCP:
 			return self.nextlayer
 		else:
 			try:
-				if self.dest_port == 53 or self.src_port == 53:
+				if (self.dest_port == 53 or self.src_port == 53):
 					self.nextlayer = DNS(self.data[self.data_offset*4:])
-				elif self.dest_port == 80 or self.src_port == 80:
+				elif (self.dest_port == 80 or self.src_port == 80):
 					self.nextlayer = HTTP(self.data[self.data_offset*4:])
 				else:
 					print("Undefined Port Number src:" + str(self.src_port) + " dst:" + str(self.dest_port))
 					self.nextlayer = self.data[self.data_offset*4:]
-			except:
+			except Exception as e:
 				print("Exception in TCP.next")
 				self.nextlayer = self.data[self.data_offset*4:]
 			return self.nextlayer
+
+	def __str__(self):
+		string = "► TCP (Transmission Control Protocol)\n"
+		string += "\tSource Port: " + str(self.src_port) + "\n"
+		string += "\tDestination Port: " + str(self.dest_port) + "\n"
+		string += "\tSequence Number: " + str(self.seq_num) + "\n"
+		string += "\tAcknowledgment Number: " + str(self.ack_num) + "\n"
+		string += "\tHeader Length: " + str(self.data_offset*4) + " Bytes\n"
+		string += "\tFlags: \n"
+		string += "\t\tNS: " + str(self.NS) + "\n"
+		string += "\t\tCWR: " + str(self.CWR) + "\n"
+		string += "\t\tECE: " + str(self.ECE) + "\n"
+		string += "\t\tURG: " + str(self.URG) + "\n"
+		string += "\t\tACK: " + str(self.ACK) + "\n"
+		string += "\t\tPSH: " + str(self.PSH) + "\n"
+		string += "\t\tRST: " + str(self.RST) + "\n"
+		string += "\t\tSYN: " + str(self.SYN) + "\n"
+		string += "\t\tFIN: " + str(self.FIN) + "\n"
+		string += "\tWindow Size: " + str(self.window_size) + "\n"
+		string += "\tChecksum: " + str(hex(self.checksum)) + "\n"
+		string += "\tUrgent Data Pointer: " + str(self.urg_pointer) + "\n"
+		if hasattr(self, "option"):
+			string += "\tOptions: \n\t\t" + str(self.option) + "\n"
+		return string
+
 
 class UDP:
 	def __init__(self, data):
@@ -45,9 +70,9 @@ class UDP:
 			return self.nextlayer
 		else:
 			try:
-				if self.dest_port == 53 or self.src_port == 53:
+				if (self.dest_port == 53 or self.src_port == 53):
 					self.nextlayer = DNS(self.data[8:self.UDPlength]) # [8:]
-				elif self.dest_port == 80 or self.src_port == 80:
+				elif (self.dest_port == 80 or self.src_port == 80):
 					self.nextlayer = HTTP(self.data[8:self.UDPlength]) # [8:]
 				else:
 					print("Undefined Port Number src:" + str(self.src_port) + " dst:" + str(self.dest_port))
@@ -57,3 +82,10 @@ class UDP:
 				self.nextlayer = self.data[self.data_offset*4:]
 			return self.nextlayer
 
+	def __str__(self):
+		string = "► UDP (User Datagram Protocol)\n"
+		string += "\tSource Port: " + str(self.src_port) + "\n"
+		string += "\tDestination Port: " + str(self.dest_port) + "\n"
+		string += "\tLength: " + str(self.UDPlength) + "\n"
+		string += "\tChecksum: " + str(hex(self.checksum)) + "\n"
+		return string

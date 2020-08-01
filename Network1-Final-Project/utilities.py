@@ -7,3 +7,13 @@ def reformat_ipv4(addr):
     for ch in addr:
         output += str(int(ch)) + '.'
     return output[:-1]
+
+def bytes_to_ascii(data):
+    output = 'ascii<'
+    for i in range(len(data)):
+        if int(data[i])<128:
+            output += chr(data[i])
+        else:
+            output += ' '
+    output += '>'
+    return output

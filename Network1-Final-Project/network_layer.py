@@ -37,12 +37,43 @@ class IPV4:
 				elif self.proto == 17:
 					self.nextlayer = UDP(self.data[self.header_length*4:])
 				else:
-					print("Wrong Protocol Number " + str(self.proto))
+					print("Wrong Protocol Number " + str(self.proto) + "\n")
 					self.nextlayer = self.data[self.header_length*4:]
 			except:
-				print("Exception in IPV4.next")
+				print("Exception in IPV4.next\n")
 				self.nextlayer = self.data[self.header_length*4:]
 			return self.nextlayer
+		
+	def __str__(self):
+		string = "► IPv4 (Internet Protocol version 4)\n"
+		string += "\tVersion: " + str(self.version) + "\n"
+		string += "\tHeader Length: " + str(self.header_length*4) + " Bytes\n"
+		string += "\tType of Service: " + str(self.ToS) + "\n"
+		string += "\tECN: " + str(self.ECN) + "\n"
+		string += "\tTotal Length: " + str(self.packetlength) + " Bytes\n"
+		string += "\tID: " + str(self.ID) + "\n"
+		string += "\tFlags:\n"
+		string += "\t\tReserved Bit: " + str(1 if self.frag_flag&4>0 else 0) + "\n"
+		string += "\t\tDon't Fragment: " + str(1 if self.frag_flag&2>0 else 0) + "\n"
+		string += "\t\tMore Fragment: " + str(1 if self.frag_flag&1>0 else 0) + "\n"
+		string += "\tFragment Offset: " + str(self.frag_offset) + "\n"
+		string += "\tTTL: " + str(self.ttl) + "\n"
+		string += "\tProtocol: "
+		if self.proto==1:
+			string += "ICMP (1)\n"
+		elif self.proto==6:
+			string += "TCP (6)\n"
+		elif self.proto==17:
+			string += "UDP (17)\n"
+		else:
+			string += "Undefined (" + str(self.proto) + ")\n"
+		string += "\tHeader Checksum: " + str(hex(self.checksum)) + "\n"
+		string += "\tSource: " + self.srcip + "\n"
+		string += "\tDestination: " + self.destip + "\n"
+		if hasattr(self, "option"):
+			string += "\tOptions: \n\t\t" + str(self.option) + "\n"
+
+		return string
 
 
 class ICMP:
@@ -56,3 +87,11 @@ class ICMP:
 
 	def next(self):
 		return self.data[8:]
+
+	def __str__(self):
+		string = "► ICMP (Internet Control Message Protocol)\n"
+		string += "\tType: " + str(self.type) + "\n"
+		string += "\tCode: " + str(self.code) + "\n"
+		string += "\tChecksum: " + str(hex(self.checksum)) + "\n"
+		string += "\tRest of Header: " + str(self.restofheader) + "\n"
+		return string
