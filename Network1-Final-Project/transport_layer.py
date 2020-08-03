@@ -1,5 +1,8 @@
 from struct import *
 from application_layer import *
+import socket
+import random
+from utilities import *
 
 class TCP:
 	def __init__(self, data):
@@ -17,6 +20,33 @@ class TCP:
 		self.CWR = 1 if (DataFlags[1]&128)>0 else 0
 		if self.data_offset > 5:
 			self.option = data[20:self.data_offset*4]
+
+	def __init__(self, src_ipv4, dest_ipv4, dest_port, syn, ack, fin, window = 120):
+		temp1 = ipv4_to_bytes(src_ipv4)
+		temp2 = ipv4_to_bytes(dest_ipv4)
+		temp3 = bytes([0, 6, 0, 20])
+		self.src_port = random.randint(1024, 65535)
+		self.dest_port = dest_port
+		self.seq_num = random.randint(0, 0xFFFFFFFF)
+		self.ack_num = random.randint(0, 0xFFFFFFFF)
+		self.data_offset = 5
+		self.NS = 0
+		self.FIN = fin
+		self.SYN = syn
+		self.RST = 0
+		self.PSH = 0
+		self.ACK = ack
+		self.URG = 0
+		self.ECE = 0
+		self.CWR = 0
+		self.window_size = window
+		self.checksum = 0
+		self.urg_pointer = 0
+		byte25 = bits_to_int([0,1,0,1,0,0,0,self.NS])
+		byte26 = bits_to_int([self.CWR, self.ECE, self.URG, self.ACK, self.PSH, self.RST, self.SYN, self.FIN])
+		self.checksum = calc_checksum(pack('! 4s 4s 4s H H L L B B H H H', temp1, temp2, temp3, self.src_port, self.dest_port, self.seq_num, self.ack_num, byte25, byte26, self.window_size, self.checksum, self.urg_pointer))
+		self.data = pack('! H H L L B B H H H', self.src_port, self.dest_port, self.seq_num, self.ack_num, byte25, byte26, self.window_size, self.checksum, self.urg_pointer)
+		
 
 	def next(self):
 		if hasattr(self, 'nextlayer'):
