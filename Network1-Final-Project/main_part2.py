@@ -135,32 +135,41 @@ while True:
 	break
 
 
-receiver = threading.Thread(target=receive, args=(result, target, port, tdelay))
-
-
+print("\n" + m + "-Scan on Host " + target_url + " (" + target + "): ")
 result = dict()
-td=0
-print(m + "-Scan on Host\t" + target_url + " (" + target + "): ")
-for port in ports:
-	while True:
-		if threading.active_count() < 10:
-			t = threading.Thread(target=mode, args=(lock, result, host, target, port, tdelay))
-			t.start()
-			td+=1
-			print("                                  ","\r")
-			print("Progression: " + str(td/len(ports)*100) + "%", end='\r')
-			time.sleep(sdelay/1000)
-			break
-		time.sleep(0.1)
-print('',end='\n')
-
-with lock:
-	print(result)
-	n=0
+if receive == None:
+	td = 0
 	for port in ports:
-		if result[port] == "Closed":
-			n+=1
-		else:
-		   print("\tPort " + str(port) + " : " + result[port])
-	if n>0:
-		print( str(n) + " Ports are Closed") 
+		while True:
+			if threading.active_count() < 10:
+				t = threading.Thread(target=mode, args=(result, host, target, port, tdelay))
+				t.start()
+				td+=1
+				print("                                  ", end="\r")
+				print("Progression: " + str(int(td/len(ports)*100)) + "%", end='\r')
+				time.sleep(sdelay/1000)
+				break
+			time.sleep(0.1)
+	print('Waiting...         ')
+	time.sleep(tdelay)
+	print('Receiving Finished.')
+else:
+	receiver = threading.Thread(target=receive, args=(result, target, ports, tdelay))
+	receiver.start()
+	for i in range(len(ports)):
+		mode(host, target, ports[i])
+		print("                                  ", end="\r")
+		print("Progression: " + str(int((i+1)/len(ports)*100)) + "%", end='\r')
+		time.sleep(sdelay/1000)
+	print('Waiting...         ')
+	receiver.join()
+	print('Receiving Finished.')
+
+n=0
+for port in ports:
+	if result[port] == "Closed":
+		n+=1
+	else:
+		print("\tPort " + str(port) + " : " + result[port])
+if n>0:
+	print("\n" + str(n) + " Ports are Closed") 

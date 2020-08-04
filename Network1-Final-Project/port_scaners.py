@@ -39,10 +39,10 @@ def receive_syn(result, target, ports, delay):
 
 	for port in ports:
 		if not port in result.keys():
-			result[key] = "Filtered"
+			result[port] = "Filtered"
 
 
-def ack_scan(host, target, port, delay):
+def ack_scan(host, target, port):
 	s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
 	obj = TCP.generatePacket(host, target, port, 0, 1, 0)
 	s.sendto(obj.data, (target, 0))
@@ -67,10 +67,10 @@ def receive_ack(result, target, ports, delay):
 
 	for port in ports:
 		if not port in result.keys():
-			result[key] = "Filtered"
+			result[port] = "Filtered"
 
 
-def fin_scan(host, target, port, delay):
+def fin_scan(host, target, port):
 	s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
 	obj = TCP.generatePacket(host, target, port, 0, 0, 1)
 	s.sendto(obj.data, (target, 0))
@@ -95,10 +95,10 @@ def receive_fin(result, target, ports, delay):
 
 	for port in ports:
 		if not port in result.keys():
-			result[key] = "Open|Filtered"
+			result[port] = "Open|Filtered"
 
 
-def windows_scan(host, target, port, delay):
+def windows_scan(host, target, port):
 	s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
 	obj = TCP.generatePacket(host, target, port, 0, 1, 0)
 	s.sendto(obj.data, (target, 0))
@@ -125,4 +125,4 @@ def receive_window(result, target, ports, delay):
 
 	for port in ports:
 		if not port in result.keys():
-			result[key] = "Filtered"
+			result[port] = "Filtered"
