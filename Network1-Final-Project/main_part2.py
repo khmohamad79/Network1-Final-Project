@@ -102,29 +102,31 @@ while True:
 	break
 
 for port in ports:
-	print(mode(host, target, port))
+	print(mode(host, target, port, 10))
 	time.sleep(delay/1000)
+
 	
+
 """
 n=0
 for port in ports:
 	if mode == 1:
 		#sys(cls)
-		print("Connect-Scan for Host()
+		print("Connect-Scan for Host(")
 		print(host)
 		print("):\n")
-		res = connect_scan(host, target, port, delay)
+		res = connect_scan(host, target, port, delay/1000)
 		if res:
 			print("\tPort " + str(port) + " : Open")
 		else:
-			n++
+			n+=1
 
 	elif mode == 2:
 		#sys(cls)
-		print("ACK-Scan for Host()
+		print("ACK-Scan for Host(")
 		print(host)
 		print("):\n")
-		res = ack_scan(host, target, port, delay)
+		res = ack_scan(host, target, port, delay/1000)
 		if res=="filtred":
 			print("\tPort " + str(port) + " : Filtered")
 		elif res=="unfiltered":
@@ -132,41 +134,42 @@ for port in ports:
 			
 	elif mode == 3:
 		#sys(cls)
-		print("SYN-Scan for Host()
+		print("SYN-Scan for Host(")
 		print(host)
 		print("):\n")
-		res = syn_scan(host, target, port, delay)
+		res = syn_scan(host, target, port, delay/1000)
+		print(res)
 		if res=="open":
 			print("\tPort " + str(port) + " : Open")
 		elif res=="filtered":
 			print("\tPort " + str(port) + " : Filtered")
 		elif res=="closed":
-			n++
+			n+=1
 			
 	elif mode == 4:
 		#sys(cls)
-		print("FIN-Scan for Host()
+		print("FIN-Scan for Host(")
 		print(host)
 		print("):\n")
-		res = fin_scan(host, target, port, delay)
+		res = fin_scan(host, target, port, delay/1000)
 		if res=="open/filtered":
 			print("\tPort " + str(port) + " : Open|Filtered")
 		elif res=="closed":
-			n++
+			n+=1
 
 	elif mode == 5:
 		#sys(cls)
-		print("Window-Scan for Host()
+		print("Window-Scan for Host(")
 		print(host)
 		print("):\n")
-		res = windows_scan(host, target, port, delay)
+		res = windows_scan(host, target, port, delay/1000)
 		if res=="open":
 			print("\tPort " + str(port) + " : Open")
 		elif res=="closed":
-			n++
+			n+=1
 		
 if n>0:
 	print( str(n) + " Ports are Closed")
-
 """
+
 
