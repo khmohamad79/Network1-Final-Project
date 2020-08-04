@@ -2,18 +2,31 @@ from port_scaners import *
 from os import system
 #import msvcrt
 import time
-
+import threading
 	
-target = input('Target IP or Hostname: ')
-target = socket.gethostbyname(target)
-print("Target IP: " + target)
+print("\n======================== Port Scanner By DM=========================\n")
+target_url = input('Target IP or Hostname: ')
+while True:
+	try:
+		target = socket.gethostbyname(target_url)
+	except socket.gaierror as e:
+		print("DNS working...")
+		continue
+	except:
+		print("Unvalid Input.")
+		target_url = input('Target IP or Hostname: ')
+		continue
+	break
+print("\nTarget IP: " + target)
+	
 
 host = get_host_ip()
-print("Host IP: " + host)
+print("\nHost IP: " + host)
 
 
 ports = []
 mode = 0
+receive = None
 delay = 0
 
 while True:
@@ -58,6 +71,7 @@ Select The Port Mode:
 		continue
 	break
 
+m =""
 while True:
 	scanmode = input("""
 
@@ -71,14 +85,23 @@ Select Scan Type:
 	try:
 		if scanmode == "1":
 			mode = connect_scan
+			m += "Connect"
 		elif scanmode == "2":
 			mode = ack_scan
+			receive = receive_ack
+			m += "ACK"
 		elif scanmode == "3":
 			mode = syn_scan
+			receive = receive_syn
+			m += "SYN"
 		elif scanmode == "4":
 			mode = fin_scan
+			receive = receive_fin
+			m += "FIN"
 		elif scanmode == "5":
 			mode = windows_scan
+			receive = receive_window
+			m += "Window"
 		else:
 			raise Exception("Unvalid Scan Type Number.")
 		#Alternate Mode Assinging
@@ -93,83 +116,51 @@ Select Scan Type:
 
 while True:
 	try:
-		delay = int(input("\nEnter Delay(ms): "))
-		if delay < 0:
+		sdelay = int(input("\nEnter Sending Delay(msec): "))
+		if sdelay < 0:
 			raise Exception()
 	except:
-		print("Wrong Input.")
+		print("Unvalid Input.")
 		continue
 	break
 
-for port in ports:
-	print(mode(host, target, port, 10))
-	time.sleep(delay/1000)
+while True:
+	try:
+		tdelay = int(input("\nEnter Timeout(sec): "))
+		if tdelay < 0:
+			raise Exception()
+	except:
+		print("Unvalid Input.")
+		continue
+	break
 
-	
 
-"""
-n=0
+receiver = threading.Thread(target=receive, args=(result, target, port, tdelay))
+
+
+result = dict()
+td=0
+print(m + "-Scan on Host\t" + target_url + " (" + target + "): ")
 for port in ports:
-	if mode == 1:
-		#sys(cls)
-		print("Connect-Scan for Host(")
-		print(host)
-		print("):\n")
-		res = connect_scan(host, target, port, delay/1000)
-		if res:
-			print("\tPort " + str(port) + " : Open")
+	while True:
+		if threading.active_count() < 10:
+			t = threading.Thread(target=mode, args=(lock, result, host, target, port, tdelay))
+			t.start()
+			td+=1
+			print("                                  ","\r")
+			print("Progression: " + str(td/len(ports)*100) + "%", end='\r')
+			time.sleep(sdelay/1000)
+			break
+		time.sleep(0.1)
+print('',end='\n')
+
+with lock:
+	print(result)
+	n=0
+	for port in ports:
+		if result[port] == "Closed":
+			n+=1
 		else:
-			n+=1
-
-	elif mode == 2:
-		#sys(cls)
-		print("ACK-Scan for Host(")
-		print(host)
-		print("):\n")
-		res = ack_scan(host, target, port, delay/1000)
-		if res=="filtred":
-			print("\tPort " + str(port) + " : Filtered")
-		elif res=="unfiltered":
-			print("\tPort " + str(port) + " : Unfiltered")
-			
-	elif mode == 3:
-		#sys(cls)
-		print("SYN-Scan for Host(")
-		print(host)
-		print("):\n")
-		res = syn_scan(host, target, port, delay/1000)
-		print(res)
-		if res=="open":
-			print("\tPort " + str(port) + " : Open")
-		elif res=="filtered":
-			print("\tPort " + str(port) + " : Filtered")
-		elif res=="closed":
-			n+=1
-			
-	elif mode == 4:
-		#sys(cls)
-		print("FIN-Scan for Host(")
-		print(host)
-		print("):\n")
-		res = fin_scan(host, target, port, delay/1000)
-		if res=="open/filtered":
-			print("\tPort " + str(port) + " : Open|Filtered")
-		elif res=="closed":
-			n+=1
-
-	elif mode == 5:
-		#sys(cls)
-		print("Window-Scan for Host(")
-		print(host)
-		print("):\n")
-		res = windows_scan(host, target, port, delay/1000)
-		if res=="open":
-			print("\tPort " + str(port) + " : Open")
-		elif res=="closed":
-			n+=1
-		
-if n>0:
-	print( str(n) + " Ports are Closed")
-"""
-
-
+		   print("\tPort " + str(port) + " : " + result[port])
+	if n>0:
+		print( str(n) + " Ports are Closed") 
