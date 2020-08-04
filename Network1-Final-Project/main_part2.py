@@ -81,6 +81,7 @@ Select Scan Type:
 			mode = windows_scan
 		else:
 			raise Exception("Unvalid Scan Type Number.")
+		#Alternate Mode Assinging
 	except Exception as e:
 		if len(e.args)>0 :
 			print(e.args[0])
@@ -103,3 +104,69 @@ while True:
 for port in ports:
 	print(mode(host, target, port))
 	time.sleep(delay/1000)
+	
+"""
+n=0
+for port in ports:
+	if mode == 1:
+		#sys(cls)
+		print("Connect-Scan for Host()
+		print(host)
+		print("):\n")
+		res = connect_scan(host, target, port, delay)
+		if res:
+			print("\tPort " + str(port) + " : Open")
+		else:
+			n++
+
+	elif mode == 2:
+		#sys(cls)
+		print("ACK-Scan for Host()
+		print(host)
+		print("):\n")
+		res = ack_scan(host, target, port, delay)
+		if res=="filtred":
+			print("\tPort " + str(port) + " : Filtered")
+		elif res=="unfiltered":
+			print("\tPort " + str(port) + " : Unfiltered")
+			
+	elif mode == 3:
+		#sys(cls)
+		print("SYN-Scan for Host()
+		print(host)
+		print("):\n")
+		res = syn_scan(host, target, port, delay)
+		if res=="open":
+			print("\tPort " + str(port) + " : Open")
+		elif res=="filtered":
+			print("\tPort " + str(port) + " : Filtered")
+		elif res=="closed":
+			n++
+			
+	elif mode == 4:
+		#sys(cls)
+		print("FIN-Scan for Host()
+		print(host)
+		print("):\n")
+		res = fin_scan(host, target, port, delay)
+		if res=="open/filtered":
+			print("\tPort " + str(port) + " : Open|Filtered")
+		elif res=="closed":
+			n++
+
+	elif mode == 5:
+		#sys(cls)
+		print("Window-Scan for Host()
+		print(host)
+		print("):\n")
+		res = windows_scan(host, target, port, delay)
+		if res=="open":
+			print("\tPort " + str(port) + " : Open")
+		elif res=="closed":
+			n++
+		
+if n>0:
+	print( str(n) + " Ports are Closed")
+
+"""
+
