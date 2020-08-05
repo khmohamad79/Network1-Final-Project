@@ -141,6 +141,10 @@ class DNS:
 		start += i	
 		self.start = start
 
+	def generatePacket():
+		data = bytes(2) + pack('! B', 0b10010000) + bytes(9)
+		return DNS(data)
+
 	def next(self):
 		return self.data[self.start:]
 

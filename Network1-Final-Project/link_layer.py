@@ -5,10 +5,14 @@ from utilities import *
 class Ethernet:
 	def __init__(self, data):
 		self.data = data
-		dest_mac, src_mac, proto = struct.unpack('! 6s 6s H', data[:14]) 
-		self.dest_mac = reformat_address(dest_mac.hex(), 2, ':')
-		self.src_mac = reformat_address(src_mac.hex(), 2, ':')
+		self.dest, self.src, proto = struct.unpack('! 6s 6s H', data[:14]) 
+		self.dest_mac = reformat_address(self.dest.hex(), 2, ':')
+		self.src_mac = reformat_address(self.src.hex(), 2, ':')
 		self.proto = proto
+
+	def generatePacekt(dest_mac, src_mac, proto):
+		data = pack('! 6s 6s H', dest_mac, src_mac, proto)
+		return Ethernet(data)
 
 	def next(self):
 		if hasattr(self, 'nextlayer'):
@@ -62,6 +66,17 @@ class ARP:
 		#self.TPA = data[start:start+Plength]
 		#start += Plength
 		self.start = start + 2*self.Plength + 2*self.Hlength
+
+	def generatePacket(Htype, Ptype, OP, SHA, SPA, THA, TPA):
+		Hlength = len(SHA)
+		Plength = len(SPA)
+		cond = '! H H B B H '
+		cond += str(Hlength) + 's '
+		cond += str(Plength) + 's '
+		cond += str(Hlength) + 's '
+		cond += str(Plength) + 's'
+		data = struct.pack(cond, Htype, Ptype, Hlength, Plength, OP, SHA, SPA, THA, TPA)
+		return ARP(data)
 
 	def next(self):
 		return self.data[self.start:]

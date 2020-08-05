@@ -81,9 +81,16 @@ class ICMP:
 		self.data = data
 		Type, Code, Checksum, ROH = unpack('! B B H 4s', data[:8])
 		self.type = Type
-		self.code = code
+		self.code = Code
 		self.checksum = Checksum
 		self.restofheader = ROH
+
+	def generatePacket(type, code, data):
+		checksum = 0
+		cond = '! B B H ' + str(len(data)) + 's'
+		checksum = calc_checksum(pack(cond, type, code, checksum, data))
+		data = pack(cond, type, code, checksum, data)
+		return ICMP(data)
 
 	def next(self):
 		return self.data[8:]
