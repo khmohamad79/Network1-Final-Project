@@ -109,7 +109,7 @@ class UDP:
 					self.nextlayer = self.data[8:self.UDPlength] # [8:]
 			except:
 				print("Exception in UDP.next")
-				self.nextlayer = self.data[self.data_offset*4:]
+				self.nextlayer = self.data[8:self.UDPlength]
 			return self.nextlayer
 
 	def __str__(self):
