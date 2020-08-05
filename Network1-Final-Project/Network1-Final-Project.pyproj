@@ -32,6 +32,9 @@
     <Compile Include="main_part2.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="main_part3.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="network_layer.py">
       <SubType>Code</SubType>
     </Compile>
