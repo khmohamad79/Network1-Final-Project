@@ -58,7 +58,7 @@ class TCP:
 				elif (self.dest_port == 80 or self.src_port == 80):
 					self.nextlayer = HTTP(self.data[self.data_offset*4:])
 				else:
-					print("Undefined Port Number src:" + str(self.src_port) + " dst:" + str(self.dest_port))
+					#print("Undefined Port Number src:" + str(self.src_port) + " dst:" + str(self.dest_port))
 					self.nextlayer = self.data[self.data_offset*4:]
 			except Exception as e:
 				print("Exception in TCP.next")
@@ -105,7 +105,7 @@ class UDP:
 				elif (self.dest_port == 80 or self.src_port == 80):
 					self.nextlayer = HTTP(self.data[8:self.UDPlength]) # [8:]
 				else:
-					print("Undefined Port Number src:" + str(self.src_port) + " dst:" + str(self.dest_port))
+					#print("Undefined Port Number src:" + str(self.src_port) + " dst:" + str(self.dest_port))
 					self.nextlayer = self.data[8:self.UDPlength] # [8:]
 			except:
 				print("Exception in UDP.next")

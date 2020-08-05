@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>4f9778d1-5671-420d-b258-5f85f7083873</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Network1_Final_Project.py</StartupFile>
+    <StartupFile>main_part1.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -38,7 +38,7 @@
     <Compile Include="network_layer.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Network1_Final_Project.py" />
+    <Compile Include="main_part1.py" />
     <Compile Include="pcap.py">
       <SubType>Code</SubType>
     </Compile>

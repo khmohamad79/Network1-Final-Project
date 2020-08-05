@@ -37,7 +37,8 @@ class Ethernet:
 		elif self.proto == 2054:
 			string += "ARP (" + str(hex(self.proto)) + ")\n"
 		else:
-			string += "Undefined (" + str(hex(self.proto)) + "\n"
+			pass
+			#string += "Undefined (" + str(hex(self.proto)) + "\n"
 		return string
 
 

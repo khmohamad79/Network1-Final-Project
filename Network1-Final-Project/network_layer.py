@@ -37,7 +37,7 @@ class IPV4:
 				elif self.proto == 17:
 					self.nextlayer = UDP(self.data[self.header_length*4:])
 				else:
-					print("Wrong Protocol Number " + str(self.proto) + "\n")
+					#print("Wrong Protocol Number " + str(self.proto) + "\n")
 					self.nextlayer = self.data[self.header_length*4:]
 			except:
 				print("Exception in IPV4.next\n")
