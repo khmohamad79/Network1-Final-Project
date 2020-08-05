@@ -9,6 +9,7 @@ def connect_scan(result, host, target, port, delay):
 	try:
 		s.connect((target, port))
 		result[port] = "Open"
+		s.close()
 	except Exception as e:
 		result[port] = "Closed"
 
