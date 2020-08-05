@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>4f9778d1-5671-420d-b258-5f85f7083873</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>main_part2.py</StartupFile>
+    <StartupFile>Network1_Final_Project.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>

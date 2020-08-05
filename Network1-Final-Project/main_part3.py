@@ -10,7 +10,7 @@ input("""
 this script replies these packets:
     ARP Requests (arp.Operation == 1)
     any ICMPs except Replies (arp.Type != 0)
-    DNS standard Queries (arp.OpCode == 0)
+    DNS standard Queries (dns.OpCode == 0)
 
     Ctrl+C to finish.
     Press ENTER to continue.""")
