@@ -71,3 +71,48 @@ def get_host_ip():
 	ip = s.getsockname()[0]
 	s.close()
 	return ip
+
+dns_rcode_map = {
+	0	:'NoError',	
+	1	:'FormErr',	
+	2	:'ServFail',
+	3	:'NXDomain',
+	4	:'NotImp',
+	5	:'Refused',	
+	6	:'YXDomain',
+	7	:'YXRRSet',
+	8	:'NXRRSet',	
+	9	:'NotAuth',	
+	10	:'NotZone'
+}
+def dns_rcode(code):
+	if code in dns_rcode_map.keys():
+		return dns_rcode_map[code]
+	else:
+		return ''
+
+def get_label(data_labels, i):
+	label = ''
+	while i in data_labels.keys():
+		label += data_labels[i] + '.'
+		i += len(data_labels[i]) + 1
+	#while label[:-1] == '.':
+	#	label = label[:-1]
+	return label
+
+def get_url(option, data_labels):
+	name = ''
+	i=0
+	while option[i] > 0:
+		if option[i] < 64:
+			label = option[ i+1 : i+1+int(option[i]) ].decode('ASCII')
+			name += label + '.'
+			i += int(option[i]) + 1
+		elif option[i] >= 192:
+			offset = (int(option[i])*256) + int(option[i+1])
+			offset = offset & 0x3FFF
+			label = get_label(data_labels, offset-12)
+			name += label + '.'
+			i+=1
+			break
+	return name
