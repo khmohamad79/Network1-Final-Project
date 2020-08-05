@@ -6,7 +6,7 @@ from utilities import *
 
 import socket
 import struct
-import _thread
+from pcap import Pcap
 
 def parse_packet(raw_data):
     layer = link_layer.Ethernet(raw_data)
@@ -23,21 +23,20 @@ def parse_packet(raw_data):
         else:
             print(layer)
 
-conn = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))
-i=0
-while i<500:
-    i +=1
-    raw_data, address = conn.recvfrom(65535)
-    parse_packet(raw_data)
-    print(80*'=')
-    print(80*'=')
-    #_thread.start_new_thread(parse_packet, (raw_data,))
 
+filename = input('Enter pcap filename: ')
+pcap = Pcap(filename)
 
-# main
-# frame = fetchFrame()
-# segment = frame.next()
-# datagram = segment.next()
+try:
+    conn = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))
+    while True:
+        raw_data, address = conn.recvfrom(65535)
+        pcap.write_data(raw_data)
+        parse_packet(raw_data)
+        print(80*'=')
+        print(80*'=')
+except:
+    pass
 
-
-
+pcap.close()
+print(80*'=')

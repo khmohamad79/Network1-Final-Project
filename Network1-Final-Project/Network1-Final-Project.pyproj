@@ -36,6 +36,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Network1_Final_Project.py" />
+    <Compile Include="pcap.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="port_scaners.py">
       <SubType>Code</SubType>
     </Compile>
